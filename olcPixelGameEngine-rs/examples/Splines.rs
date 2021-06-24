@@ -2,7 +2,7 @@ extern crate olc_pixel_game_engine;
 
 use std::{i32, string, usize};
 
-use olc::{draw, draw_string, fill_circle, BLUE, WHITE};
+use olc::{BLUE, GREEN, WHITE, draw, draw_string, fill_circle,draw_line};
 
 use crate::olc_pixel_game_engine as olc;
 
@@ -57,9 +57,46 @@ impl Splines {
             y: self.tmp_point.y,
         }
     }
-    pub fn GenerateSplinegradient(t:f32)
-    {
-        
+    pub fn GenerateSplinegradient(&mut self,tmp_t:f32)-> point {
+        let size = self.points.len();
+        let p1 = (tmp_t as i32 + 1) % size as i32;
+        let p2 = (&p1 + 1) % size as i32;
+        let p3 = (&p2 + 1) % size as i32;
+        let p0: i32;
+        if p1 == 0 {
+            p0 = size as i32 - 1;
+        } else {
+            p0 = (p1 - 1) % size as i32;
+        }
+        let mut t = tmp_t;
+
+        t = &t - t as i32 as f32;
+
+        if t > 1.0 {
+            return point { x: 0.0, y: 0.0 };
+        }
+        let tt = &t * &t;
+        let ttt = &t * &t * &t;
+
+        let y0: f32 = -3.0 * tt + 4.0 * t -1 as f32;
+        let y1: f32 = 9.0 * tt - 10.0 * t as f32;
+        let y2: f32 = -9.0 * tt + 8.0 * t + 1.0 as f32;
+        let y3: f32 = 3.0 * tt - 2.0 *t as f32;
+        self.tmp_point.x = 0.5
+            * (self.points[p0 as usize].x * y0
+                + self.points[p1 as usize].x * y1
+                + self.points[p2 as usize].x * y2
+                + self.points[p3 as usize].x * y3);
+        self.tmp_point.y = 0.5
+            * (self.points[p0 as usize].y * y0
+                + self.points[p1 as usize].y * y1
+                + self.points[p2 as usize].y * y2
+                + self.points[p3 as usize].y * y3);
+
+        point {
+            x: self.tmp_point.x,
+            y: self.tmp_point.y,
+        }
     }
 
 }
@@ -126,8 +163,6 @@ impl olc::Application for Demo {
         }
 
         //draw points
-
-
         for (pos, e) in self.splines.points.iter().enumerate() {
             let color : olc::Pixel;
             if self.Selecter ==pos as u32{
@@ -145,6 +180,13 @@ impl olc::Application for Demo {
             );
             draw_string(e.x as i32, e.y as i32, &pos.to_string()[..], olc::RED)?;
         }
+        #[must_use = "method returns a new number and does not mutate the original value"]
+
+        let p1 :point = self.splines.GenerateSpline(self.fMaker);
+        let g1 :point = self.splines.GenerateSplinegradient(self.fMaker);
+        let r :f32 = g1.y.atan2(g1.x); 
+
+        draw_line((5.0 * r.sin() + p1.x) as i32, (5.0 * r.cos() + p1.y)as i32, (-5.0*r.sin()+ p1.x)as i32, (-5.0*r.cos()+p1.y)as i32,GREEN);
         Ok(())
     }
     fn on_user_destroy(&mut self) -> Result<(), olc::Error> {
