@@ -17,7 +17,7 @@ struct Splines {
 
 impl Splines {
     pub fn GenerateSpline(&mut self, tmp_t: f32) -> point {
-        let size  = self.points.len();
+        let size = self.points.len();
         let p1 = (tmp_t as i32 + 1) % size as i32;
         let p2 = (&p1 + 1) % size as i32;
         let p3 = (&p2 + 1) % size as i32;
@@ -30,12 +30,9 @@ impl Splines {
         let mut t = tmp_t;
 
         t = &t - t as i32 as f32;
-        
+
         if t > 1.0 {
-          return point {
-              x: 0.0,
-              y: 0.0,
-          }        
+            return point { x: 0.0, y: 0.0 };
         }
         let tt = &t * &t;
         let ttt = &t * &t * &t;
@@ -60,12 +57,18 @@ impl Splines {
             y: self.tmp_point.y,
         }
     }
+    pub fn GenerateSplinegradient(t:f32)
+    {
+        
+    }
+
 }
 
 struct Demo {
     Selecter: u32,
     splines: Splines,
     fMaker: f32,
+    Speed: f32,
 }
 
 impl olc::Application for Demo {
@@ -88,31 +91,31 @@ impl olc::Application for Demo {
         olc::clear(olc::BLACK);
         //olc::draw_string(40, 40, "Hell7o, World!", olc::WHITE)?;
 
-        if olc::get_key(olc::Key::D).pressed {
+        if olc::get_key(olc::Key::A).pressed {
             if self.Selecter <= 0 {
-                self.Selecter = self.splines.points.len() as u32 -1 ;
+                self.Selecter = self.splines.points.len() as u32 - 1;
             } else {
                 self.Selecter -= 1;
             }
         }
-        if olc::get_key(olc::Key::A).pressed {
-            if self.Selecter >= self.splines.points.len() as u32 -1 {
+        if olc::get_key(olc::Key::D).pressed {
+            if self.Selecter >= self.splines.points.len() as u32 - 1 {
                 self.Selecter = 0 as u32;
             } else {
                 self.Selecter += 1;
             }
         }
         if olc::get_key(olc::Key::UP).held {
-            self.splines.points[self.Selecter as usize].y -= 6.0 * _elapsed_time;
+            self.splines.points[self.Selecter as usize].y -= self.Speed * _elapsed_time;
         }
         if olc::get_key(olc::Key::DOWN).held {
-            self.splines.points[self.Selecter as usize].y += 6.0 * _elapsed_time;
+            self.splines.points[self.Selecter as usize].y += self.Speed * _elapsed_time;
         }
         if olc::get_key(olc::Key::LEFT).held {
-            self.splines.points[self.Selecter as usize].x -= 6.0 * _elapsed_time;
+            self.splines.points[self.Selecter as usize].x -= self.Speed * _elapsed_time;
         }
         if olc::get_key(olc::Key::RIGHT).held {
-            self.splines.points[self.Selecter as usize].x += 6.0 * _elapsed_time;
+            self.splines.points[self.Selecter as usize].x += self.Speed * _elapsed_time;
         }
         //draw line
         let mut t: f32 = 0.0;
@@ -123,12 +126,22 @@ impl olc::Application for Demo {
         }
 
         //draw points
+
+
         for (pos, e) in self.splines.points.iter().enumerate() {
+            let color : olc::Pixel;
+            if self.Selecter ==pos as u32{
+                color = olc::GREEN;
+            }
+            else{
+                color = olc::BLUE;
+            }
+
             fill_circle(
-                self.splines.points[pos].x as i32 ,
-                self.splines.points[pos].y as i32 ,
+                self.splines.points[pos].x as i32,
+                self.splines.points[pos].y as i32,
                 1,
-                BLUE,
+                color,
             );
             draw_string(e.x as i32, e.y as i32, &pos.to_string()[..], olc::RED)?;
         }
@@ -147,6 +160,8 @@ fn main() {
             tmp_point: point { x: 0.0, y: 0.0 },
         },
         fMaker: 0.0,
+        Speed: 12.0,
+
     };
     olc::start("Hello, World!", &mut demo, 160, 80, 10, 10).unwrap();
 }
