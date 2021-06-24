@@ -1,0 +1,15 @@
+[package]
+name = "olc_pixel_game_engine"
+version = "0.5.0"
+description = "Rust bindings for olcPixelGameEngine"
+homepage = "https://github.com/sadikovi/olcPixelGameEngine-rs"
+repository = "https://github.com/sadikovi/olcPixelGameEngine-rs"
+readme = "README.md"
+keywords = ["olc", "olcPixelGameEngine"]
+authors = ["Ivan Sadikov <ivan.sadikov@gmail.com>"]
+edition = "2018"
+license = "MIT"
+exclude = ["examples/*"] # we don't include examples as part of the library
+
+[build-dependencies]
+cc = "1.0"
