@@ -4,8 +4,10 @@ version = "0.1.0"
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+exclude = ["examples/*"] # we don't include examples as part of the library
 
 [dependencies]
-iced = "0.3"
+iced = {version = "0.3.0"} 
 iced_native = "0.4.0"
 iced_graphics = "0.2.0"
+qr_code = "1.1.0"
