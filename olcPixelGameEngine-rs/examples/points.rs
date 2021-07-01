@@ -1,13 +1,12 @@
 extern crate olc_pixel_game_engine;
 
 use rand::Rng;
-use std::{i32, mem::discriminant, string, usize};
+use std::{i32, string, usize};
 
-use olc::{BLUE, GREEN, WHITE, c_rand, draw, draw_line, draw_string, fill_circle};
+use olc::{BLUE, GREEN, WHITE, c_rand, draw, draw_string};
 
 use crate::olc_pixel_game_engine as olc;
 
-// Very simple example application that prints "Hello, World!" on screen.
 struct point{
     pub x:f32,
     pub y:f32,
@@ -21,13 +20,14 @@ struct Points {
     pub Maxspeed :f32
 }
 impl Points{
+    //generate the path of ball 
     pub fn GeneratePath(&self)->point{
         
         let x1 = self.startPoint.x;
         let y1 = self.startPoint.y;
         let x2 = self.endPoint.x;
         let y2 = self.endPoint.y;
-
+        //TODO 初始化必须赋值？？？
         let mut Rpoint =point 
         {
              x:0.0,
@@ -44,6 +44,7 @@ impl Points{
         Rpoint.y = self.startPoint.y + (y2-y1) / (x2-x1) * direction_x;
         Rpoint
     }
+    //generate next random number
     pub fn GenerateNumber(&self)->usize{
         let mut rng = rand::thread_rng();
         let mut pointNumber = rng.gen_range(0..self.points.len()-1);
@@ -80,12 +81,12 @@ impl olc::Application for Points {
 
   fn on_user_update(&mut self, _elapsed_time: f32) -> Result<(), olc::Error> {
     // Mirrors `olcPixelGameEngine::onUserUpdate`. Your code goes here.
-
     // Clears screen and sets black colour.
     olc::clear(olc::BLACK);
+    // set the value of frame  设置每一帧的时间间隔 
     self.tmpFrame += _elapsed_time * 1000.0 as f32;
     if self.tmpFrame > self.Maxspeed{
-        // find next point 
+    // find next point 
         if self.needFindNext {
             let pointNumber = self.GenerateNumber();
             self.endPoint.x = self.points[pointNumber].x;
@@ -103,10 +104,7 @@ impl olc::Application for Points {
         }
         self.tmpFrame = 0.0;
     }
-
-
-
-    // Prints the string starting at the position (40, 40) and using white colour.
+    // draw the points
     for (pos,e) in self.points.iter().enumerate(){
         olc::draw(e.x as i32, e.y as i32, olc::RED);
         olc::draw_string(e.x as i32, (e.y + 4.0) as i32, &pos.to_string()[..] , olc::GREEN);
