@@ -13,3 +13,5 @@ exclude = ["examples/*"] # we don't include examples as part of the library
 
 [build-dependencies]
 cc = "1.0"
+[dependencies]
+rand = "0.8.4"
