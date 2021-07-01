@@ -12,15 +12,15 @@ struct point{
     pub y:f32,
 }
 struct Points {
-    pub points :Vec<point>,
-    pub startPoint: point,
-    pub endPoint:point,
-    pub needFindNext:bool,
-    pub tmpFrame : f32,
-    pub Maxspeed :f32
+    pub points :Vec<point>,  //用来存储所有的点
+    pub startPoint: point,   //运动的点的位置
+    pub endPoint:point,      //运动的点的目标位置
+    pub needFindNext:bool,   //判断是否到达目的点
+    pub tmpFrame : f32,      //存储frame
+    pub Maxspeed :f32        //每一帧的速度
 }
 impl Points{
-    //generate the path of ball 
+    //根据start和end点的位置，生成一下个点的位置
     pub fn GeneratePath(&self)->point{
         
         let x1 = self.startPoint.x;
@@ -44,7 +44,7 @@ impl Points{
         Rpoint.y = self.startPoint.y + (y2-y1) / (x2-x1) * direction_x;
         Rpoint
     }
-    //generate next random number
+    //生成下一个随机点的位置
     pub fn GenerateNumber(&self)->usize{
         let mut rng = rand::thread_rng();
         let mut pointNumber = rng.gen_range(0..self.points.len()-1);
@@ -104,7 +104,7 @@ impl olc::Application for Points {
         }
         self.tmpFrame = 0.0;
     }
-    // draw the points
+    // 绘制点部分
     for (pos,e) in self.points.iter().enumerate(){
         olc::draw(e.x as i32, e.y as i32, olc::RED);
         olc::draw_string(e.x as i32, (e.y + 4.0) as i32, &pos.to_string()[..] , olc::GREEN);
