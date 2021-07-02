@@ -17,6 +17,12 @@ cargo run --example points
 - BALL COLLISION
 
 > [RUST源码位置Here](https://github.com/tiansongyu/Rust_project/blob/main/olcPixelGameEngine-rs/examples/points.rs)
+
+- StartField
+
+> [RUST源码位置Here](https://github.com/tiansongyu/Rust_project/blob/main/olcPixelGameEngine-rs/examples/starfield.rs)
+
+
 ## demo示例
 ### points示例(BALL COLLISION)
 
@@ -25,3 +31,7 @@ cargo run --example points
 ### splines示例
 
 <img src="https://github.com/tiansongyu/Rust_project/blob/main/olcPixelGameEngine-rs/images/splines.gif" alt="图片替换文本" width="350" height="250" align="bottom" />
+
+### startfield示例
+
+<img src="https://github.com/tiansongyu/Rust_project/blob/main/olcPixelGameEngine-rs/images/startfield.gif" alt="图片替换文本" width="350" height="250" align="bottom" />
