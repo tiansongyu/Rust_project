@@ -34,4 +34,4 @@ cargo run --example points
 
 ### startfield示例
 
-<img src="https://github.com/tiansongyu/Rust_project/blob/main/olcPixelGameEngine-rs/images/startfield.gif" alt="图片替换文本" width="350" height="250" align="bottom" />
+<img src="https://github.com/tiansongyu/Rust_project/blob/main/olcPixelGameEngine-rs/images/starfield.gif" alt="图片替换文本" width="350" height="250" align="bottom" />
